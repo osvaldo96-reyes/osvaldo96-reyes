@@ -8,6 +8,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.linkedin.com/in/osvaldo-reyes-campos/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
   <img src="https://img.shields.io/badge/Ubicaci%C3%B3n-M%C3%A9xico-2F81F7?style=for-the-badge&logo=googlemaps&logoColor=white" alt="México"/>
   <img src="https://img.shields.io/badge/Abierto_a-oportunidades_DevOps-238636?style=for-the-badge" alt="Abierto a oportunidades"/>
 </p>
