@@ -120,6 +120,10 @@ flowchart LR
 
 Toda la infraestructura del servidor como código: **11 contenedores** documentados, reproducibles y con guías de instalación.
 
+> 🔓 **Demo pública de esta arquitectura:** [streaming-rtmp-webrtc-stack](https://github.com/osvaldo96-reyes/streaming-rtmp-webrtc-stack). Se levanta con `docker compose up` y tiene CI con lint, escaneo de seguridad y prueba de punta a punta.
+>
+> [![CI](https://github.com/osvaldo96-reyes/streaming-rtmp-webrtc-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/osvaldo96-reyes/streaming-rtmp-webrtc-stack/actions/workflows/ci.yml)
+
 ```mermaid
 flowchart LR
   OBS["OBS<br/>4 salas"] -->|RTMP| SRS["SRS<br/>ingesta"]
@@ -143,7 +147,7 @@ flowchart LR
 | Docker y Docker Compose | ✅ En producción |
 | Nginx (reverse proxy) | ✅ En producción |
 | Git y GitHub | ✅ |
-| CI/CD con GitHub Actions | 🔄 Aprendiendo |
+| CI/CD con GitHub Actions | ✅ Lint, escaneo de seguridad y pruebas E2E |
 | Kubernetes | 🔜 |
 | Terraform (IaC) | 🔜 |
 | AWS / nube | 🔜 |
