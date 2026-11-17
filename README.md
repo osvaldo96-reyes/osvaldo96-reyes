@@ -26,7 +26,7 @@
 
 **Lenguajes y backend**
 <p>
-  <img src="https://skillicons.dev/icons?i=python,flask,js,html,css,kotlin&theme=dark" alt="Lenguajes"/>
+  <img src="https://skillicons.dev/icons?i=python,fastapi,flask,js,html,css,kotlin&theme=dark" alt="Lenguajes"/>
 </p>
 
 **Infraestructura y DevOps**
@@ -43,6 +43,97 @@
   <img src="https://img.shields.io/badge/OBS-302E31?style=for-the-badge&logo=obsstudio&logoColor=white" alt="OBS" height="44"/>
   <img src="https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=webrtc&logoColor=white" alt="WebRTC" height="44"/>
 </p>
+
+### 💼 Proyectos profesionales
+
+> El código de estos sistemas es privado porque está en producción en una institución. Aquí está **qué resuelven, cómo están construidos y qué hice yo**.
+
+---
+
+#### 🎥 Grabador distribuido de audiencias · *arquitecto y desarrollador*
+
+Sistema que **reemplaza un software comercial de grabación**: una central coordina agentes instalados junto a las cámaras de cada sala, que graban, vigilan la señal y entregan el video final.
+
+<p>
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SQLAlchemy-D71F00?style=flat-square&logo=sqlalchemy&logoColor=white"/>
+  <img src="https://img.shields.io/badge/FFmpeg-007808?style=flat-square&logo=ffmpeg&logoColor=white"/>
+  <img src="https://img.shields.io/badge/systemd-30D475?style=flat-square&logo=linux&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SQL_Server_%7C_MySQL_%7C_SQLite-CC2927?style=flat-square&logo=microsoftsqlserver&logoColor=white"/>
+</p>
+
+```mermaid
+flowchart LR
+  subgraph DC["Centro de datos / nube"]
+    C["Central<br/>FastAPI + panel web"] --- DB[("Base de datos<br/>SQL Server · MySQL")]
+    C --> FTP[("Almacén de videos<br/>FTP · S3")]
+  end
+  subgraph S["Edificio"]
+    A1["Agente 1<br/>FFmpeg"] ---|RTMP/RTSP| CAM1(("Cámaras sala A"))
+    A2["Agente N<br/>FFmpeg"] ---|RTMP/RTSP| CAM2(("Cámaras sala N"))
+  end
+  C <-->|"API + token"| A1
+  C <-->|"API + token"| A2
+```
+
+- Diseñé la arquitectura **central + agentes**: los agentes no guardan lógica de negocio y la central no guarda estado en memoria, así que **escala horizontalmente**.
+- **Grabación tolerante a fallos**: pausa, reanudación y unión de tramos en MP4. Si el proceso se detiene, cierra los archivos íntegros y al volver recupera las grabaciones.
+- **Instalador offline** para Ubuntu 16.04+ y Windows, con servicio **systemd**, actualización y desinstalación.
+- Configuración 100 % por **variables de entorno**, base de datos intercambiable, monitoreo de salud y envío con reintentos.
+- Documentación completa: arquitectura, despliegue, diccionario de datos y roadmap a **AWS** (ECS/Fargate, RDS, S3).
+
+---
+
+#### 🏛️ Plataforma de gestión y grabación de audiencias · *full-stack + operación*
+
+Aplicación web **en producción** que centraliza la operación de las salas: agenda de audiencias, estado de grabación en vivo, control remoto de OBS, reportes y auditoría.
+
+<p>
+  <img src="https://img.shields.io/badge/Flask-000000?style=flat-square&logo=flask&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Gunicorn_+_WebSockets-499848?style=flat-square&logo=gunicorn&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SQL_Server-CC2927?style=flat-square&logo=microsoftsqlserver&logoColor=white"/>
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white"/>
+  <img src="https://img.shields.io/badge/OBS_WebSocket-302E31?style=flat-square&logo=obsstudio&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SOAP-6D6D6D?style=flat-square"/>
+</p>
+
+```mermaid
+flowchart LR
+  U(("Operadores")) --> N["Nginx<br/>reverse proxy"] --> F["Flask + Gunicorn<br/>WebSockets"]
+  F --> R[("SQL Server<br/>usuarios · roles · auditoría")]
+  F --> J[("SQL Server<br/>audiencias")]
+  F --> M[("MySQL<br/>4 salas")]
+  F -->|WebSocket| O["OBS de cada sala"]
+  F -->|SOAP| W["Servicio externo<br/>de expedientes"]
+  F --> V[("Videos<br/>FTP")]
+```
+
+- Integré **7 bases de datos** (3 SQL Server y 4 MySQL) y servicios externos (SOAP, OBS WebSocket) en una sola plataforma.
+- **Seguridad**: roles y permisos por módulo, bitácora de auditoría de más de 1 M de eventos y **URLs firmadas con HMAC** con expiración para descargar videos.
+- Contenericé la app (**Docker + Gunicorn/eventlet + Nginx**) con healthchecks, separación dev/prod y script de despliegue.
+
+---
+
+#### 🐳 Infraestructura contenerizada y streaming en vivo · *DevOps*
+
+Toda la infraestructura del servidor como código: **11 contenedores** documentados, reproducibles y con guías de instalación.
+
+```mermaid
+flowchart LR
+  OBS["OBS<br/>4 salas"] -->|RTMP| SRS["SRS<br/>ingesta"]
+  SRS --> R["Relays FFmpeg<br/>4 contenedores"]
+  R -->|RTMP| OME["OvenMediaEngine"]
+  OME -->|"WebRTC, menos de 1 s"| B(("Navegador"))
+```
+
+- Pipeline de video en vivo **RTMP → WebRTC** de baja latencia (SRS, FFmpeg, OvenMediaEngine).
+- Pasé contenedores creados a mano con `docker run` a **Docker Compose versionado** en Git, con secretos fuera del repo (`.env.example`) y un mapa de puertos.
+- **Diagnóstico y operación**: análisis de almacenamiento de SQL Server, respaldos verificados y plan de migración a **volúmenes persistentes** con rollback automático.
+- Auditoría de seguridad de repositorios: detección y retiro de credenciales expuestas.
+
+---
 
 ### 🧭 Ruta DevOps
 
