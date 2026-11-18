@@ -44,6 +44,13 @@
   <img src="https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=webrtc&logoColor=white" alt="WebRTC" height="44"/>
 </p>
 
+### 🚀 Proyectos destacados (código abierto)
+
+| Proyecto | Qué demuestra | CI/CD |
+|---|---|---|
+| [**flask-production-template**](https://github.com/osvaldo96-reyes/flask-production-template) | Flask en producción: Docker endurecido (no-root, read-only), Nginx con rate limit, PostgreSQL, healthchecks liveness/readiness, métricas Prometheus multiproceso, logs JSON con request id. Pipeline que prueba, escanea y **publica la imagen en GHCR**. | [![CI/CD](https://github.com/osvaldo96-reyes/flask-production-template/actions/workflows/ci.yml/badge.svg)](https://github.com/osvaldo96-reyes/flask-production-template/actions/workflows/ci.yml) |
+| [**streaming-rtmp-webrtc-stack**](https://github.com/osvaldo96-reyes/streaming-rtmp-webrtc-stack) | Video en vivo de OBS al navegador en menos de 1 s: SRS, relay FFmpeg y OvenMediaEngine con Docker Compose. CI con prueba de punta a punta del pipeline de video. | [![CI](https://github.com/osvaldo96-reyes/streaming-rtmp-webrtc-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/osvaldo96-reyes/streaming-rtmp-webrtc-stack/actions/workflows/ci.yml) |
+
 ### 💼 Proyectos profesionales
 
 > El código de estos sistemas es privado porque está en producción en una institución. Aquí está **qué resuelven, cómo están construidos y qué hice yo**.
@@ -147,11 +154,11 @@ flowchart LR
 | Docker y Docker Compose | ✅ En producción |
 | Nginx (reverse proxy) | ✅ En producción |
 | Git y GitHub | ✅ |
-| CI/CD con GitHub Actions | ✅ Lint, escaneo de seguridad y pruebas E2E |
+| CI/CD con GitHub Actions | ✅ Lint, tests, Trivy, E2E y publicación en GHCR |
 | Kubernetes | 🔜 |
 | Terraform (IaC) | 🔜 |
 | AWS / nube | 🔜 |
-| Prometheus + Grafana | 🔜 |
+| Prometheus + Grafana | 🔄 Métricas Prometheus implementadas |
 
 ### 📊 Actividad
 
